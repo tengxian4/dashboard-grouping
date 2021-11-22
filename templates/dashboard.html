@@ -1,0 +1,526 @@
+<!doctype html>
+<!-- 
+* Bootstrap Simple Admin Template
+* Version: 2.1
+* Author: Alexis Luna
+* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
+-->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard | Bootstrap Simple Admin Template</title>
+  
+ 
+
+    <link href="{{ url_for('static',filename='vendor/fontawesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='vendor/fontawesome/css/solid.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='vendor/fontawesome/css/brands.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='css/master.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static',filename='vendor/flagiconcss/css/flag-icon.min.css') }}" rel="stylesheet" type="text/css">
+
+</head>
+
+<body onload=myFunction()>
+    <div class="wrapper">
+        <nav id="sidebar" class="active">
+            <div class="sidebar-header">
+                <img src="static/img/bootstraper-logo.png" alt="bootraper logo" class="app-logo">
+            </div>
+            <ul class="list-unstyled components text-secondary">
+                <li>
+                    <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                </li>
+                <li>
+                    <a href="forms.html"><i class="fas fa-file-alt"></i> Forms</a>
+                </li>
+                <li>
+                    <a href="http://127.0.0.1:5000/result"><i class="fas fa-table"></i>Student Result</a>
+                </li>
+                <li>
+                    <a href="charts.html"><i class="fas fa-chart-bar"></i> Charts</a>
+                </li>
+                <li>
+                    <a href="icons.html"><i class="fas fa-icons"></i> Icons</a>
+                </li>
+                <li>
+                    <a href="#uielementsmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle no-caret-down"><i class="fas fa-layer-group"></i> UI Elements</a>
+                    <ul class="collapse list-unstyled" id="uielementsmenu">
+                        <li>
+                            <a href="ui-buttons.html"><i class="fas fa-angle-right"></i> Buttons</a>
+                        </li>
+                        <li>
+                            <a href="ui-badges.html"><i class="fas fa-angle-right"></i> Badges</a>
+                        </li>
+                        <li>
+                            <a href="ui-cards.html"><i class="fas fa-angle-right"></i> Cards</a>
+                        </li>
+                        <li>
+                            <a href="ui-alerts.html"><i class="fas fa-angle-right"></i> Alerts</a>
+                        </li>
+                        <li>
+                            <a href="ui-tabs.html"><i class="fas fa-angle-right"></i> Tabs</a>
+                        </li>
+                        <li>
+                            <a href="ui-date-time-picker.html"><i class="fas fa-angle-right"></i> Date & Time Picker</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#authmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle no-caret-down"><i class="fas fa-user-shield"></i> Authentication</a>
+                    <ul class="collapse list-unstyled" id="authmenu">
+                        <li>
+                            <a href="login.html"><i class="fas fa-lock"></i> Login</a>
+                        </li>
+                        <li>
+                            <a href="signup.html"><i class="fas fa-user-plus"></i> Signup</a>
+                        </li>
+                        <li>
+                            <a href="forgot-password.html"><i class="fas fa-user-lock"></i> Forgot password</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#pagesmenu" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle no-caret-down"><i class="fas fa-copy"></i> Pages</a>
+                    <ul class="collapse list-unstyled" id="pagesmenu">
+                        <li>
+                            <a href="blank.html"><i class="fas fa-file"></i> Blank page</a>
+                        </li>
+                        <li>
+                            <a href="404.html"><i class="fas fa-info-circle"></i> 404 Error page</a>
+                        </li>
+                        <li>
+                            <a href="500.html"><i class="fas fa-info-circle"></i> 500 Error page</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="users.html"><i class="fas fa-user-friends"></i>Users</a>
+                </li>
+                <li>
+                    <a href="settings.html"><i class="fas fa-cog"></i>Settings</a>
+                </li>
+            </ul>
+        </nav>
+        <div id="body" class="active">
+            <!-- navbar navigation component -->
+            <nav class="navbar navbar-expand-lg navbar-white bg-white">
+                <button type="button" id="sidebarCollapse" class="btn btn-light">
+                    <i class="fas fa-bars"></i><span></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <div class="nav-dropdown">
+                                <a href="#" id="nav1" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-link"></i> <span>Quick Links</span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end nav-link-menu" aria-labelledby="nav1">
+                                    <ul class="nav-list">
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-list"></i> Access Logs</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-database"></i> Back ups</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-cloud-download-alt"></i> Updates</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-user-shield"></i> Roles</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <div class="nav-dropdown">
+                                <a href="#" id="nav2" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i> <span>John Doe</span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end nav-link-menu">
+                                    <ul class="nav-list">
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-address-card"></i> Profile</a></li>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-envelope"></i> Messages</a></li>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a></li>
+                                        <div class="dropdown-divider"></div>
+                                        <li><a href="" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- end of navbar navigation -->
+            <div class="content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 page-header">
+                            <div class="page-pretitle">Overview</div>
+                            <h2 class="page-title">Dashboard</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="icon-big text-center">
+                                                <i class="fa fa-user mt-2" style="color:royalblue"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="detail">
+                                                <p class="detail-subtitle">Current Students</p>
+                                                <span class="number">{{student_name|length}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <hr />
+                                        <div class="stats">
+                                            <i class="fas fa-calendar"></i> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="icon-big text-center">
+                                                <span class="fa-fw select-all fas"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="detail">
+                                                <p class="detail-subtitle">Alumni</p>
+                                                <span class="number">157</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <hr />
+                                        <div class="stats">
+                                            <i class="fas fa-calendar"></i> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="icon-big text-center">
+                                                <i class="violet fas fa-eye"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="detail">
+                                                <p class="detail-subtitle">Page views</p>
+                                                <span class="number">28,210</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <hr />
+                                        <div class="stats">
+                                            <i class="fas fa-stopwatch"></i> For this Month
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3 mt-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="icon-big text-center">
+                                                <i class="orange fas fa-envelope"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="detail">
+                                                <p class="detail-subtitle">Support Request</p>
+                                                <span class="number">75</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="footer">
+                                        <hr />
+                                        <div class="stats">
+                                            <i class="fas fa-envelope-open-text"></i> For this week
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="content">
+                                        <div class="head">
+                                            <span class="fa-fw select-all fas" style="font-size:5em"></span>
+                                            <h5 class="mb-0">AI in Groupping</h5>
+                                            <p class="text-muted">Genetic Algorithm</p>
+                                            <form action="http://127.0.0.1:5000/displayGA">
+<!--C:\Users\Asus\anaconda3\envs\rasa-w2\lockebot\index.html-->
+<input type="submit" value="Go to AI Grouping of students" />
+</form>
+                                        </div>
+                                        <div class="canvas-wrapper"></div>
+                                           
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="content">
+                                            <div class="head">
+                                                <h5 class="mb-0">Adjectives and adverbs</h5>
+                                                <p class="text-muted">Number of Students vs Score</p>
+                                            </div>
+                                            <div class="canvas-wrapper">
+                                                <canvas class="chart" id="sales"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="content">
+                                        <div class="head">
+                                            <h5 class="mb-0">Articles a, an, the</h5>
+                                            <p class="text-muted">Number of Students vs Score</p>
+                                        </div>
+                                        <div class="canvas-wrapper">
+                                            <canvas class="chart" id="sales1"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="content">
+                                            <div class="head">
+                                                <h5 class="mb-0">Conditional sentences (if-clauses and main clauses)')</h5>
+                                                <p class="text-muted">Number of Students vs Score</p>
+                                            </div>
+                                            <div class="canvas-wrapper">
+                                                <canvas class="chart" id="sales2"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="content">
+                                        <div class="head">
+                                            <h5 class="mb-0">Endings of nouns and verbs</h5>
+                                            <p class="text-muted">Number of Students vs Score</p>
+                                        </div>
+                                        <div class="canvas-wrapper">
+                                            <canvas class="chart" id="sales3"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="content">
+                                            <div class="head">
+                                                <h5 class="mb-0">Plural, 's, one</h5>
+                                                <p class="text-muted">Number of Students vs Score</p>
+                                            </div>
+                                            <div class="canvas-wrapper">
+                                                <canvas class="chart" id="sales4"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="content">
+                                        <div class="head">
+                                            <h5 class="mb-0">Irregular and regular verbs</h5>
+                                            <p class="text-muted">Number of Students vs Score</p>
+                                        </div>
+                                        <div class="canvas-wrapper">
+                                            <canvas class="chart" id="sales5"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                           
+                        </div>
+
+                    <div class="col-md-3">
+                            
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="dfd text-center">
+                                            <i class="blue large-icon mb-2 fas fa-thumbs-up"></i>
+                                            <h4 class="mb-0">+21,900</h4>
+                                            <p class="text-muted">FACEBOOK PAGE LIKES</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="dfd text-center">
+                                            <i class="orange large-icon mb-2 fas fa-reply-all"></i>
+                                            <h4 class="mb-0">+22,566</h4>
+                                            <p class="text-muted">INSTAGRAM FOLLOWERS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="dfd text-center">
+                                            <i class="grey large-icon mb-2 fas fa-envelope"></i>
+                                            <h4 class="mb-0">+15,566</h4>
+                                            <p class="text-muted">E-MAIL SUBSCRIBERS</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="dfd text-center">
+                                            <i class="olive large-icon mb-2 fas fa-dollar-sign"></i>
+                                            <h4 class="mb-0">+98,601</h4>
+                                            <p class="text-muted">TOTAL SALES</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="static/vendor/jquery/jquery.min.js"></script>
+    <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="static/vendor/chartsjs/Chart.min.js"></script>
+    <script src="static/js/dashboard-charts.js"></script>
+    <script src="static/js/script.js"></script>
+   
+
+    
+    <script> localStorage.setItem("frequency0", '{{frequency1[0]}}'); </script>
+    <script> localStorage.setItem("frequency1", '{{frequency1[1]}}'); </script>
+    <script> localStorage.setItem("frequency2", '{{frequency1[2]}}'); </script>
+    <script> localStorage.setItem("frequency3", '{{frequency1[3]}}'); </script>
+    <script> localStorage.setItem("frequency4", '{{frequency1[4]}}'); </script>
+    <script> localStorage.setItem("frequency5", '{{frequency1[5]}}'); </script>
+    <script> localStorage.setItem("frequency6", '{{frequency1[6]}}'); </script>
+    <script> localStorage.setItem("frequency7", '{{frequency1[7]}}'); </script>
+    <script> localStorage.setItem("frequency8", '{{frequency1[8]}}'); </script>
+    <script> localStorage.setItem("frequency9", '{{frequency1[9]}}'); </script>
+    <script> localStorage.setItem("frequency10", '{{frequency1[10]}}'); </script>
+    
+    <script> localStorage.setItem("frequency2_0", '{{frequency2[0]}}'); </script>
+    <script> localStorage.setItem("frequency2_1", '{{frequency2[1]}}'); </script>
+    <script> localStorage.setItem("frequency2_2", '{{frequency2[2]}}'); </script>
+    <script> localStorage.setItem("frequency2_3", '{{frequency2[3]}}'); </script>
+    <script> localStorage.setItem("frequency2_4", '{{frequency2[4]}}'); </script>
+    <script> localStorage.setItem("frequency2_5", '{{frequency2[5]}}'); </script>
+    <script> localStorage.setItem("frequency2_6", '{{frequency2[6]}}'); </script>
+    <script> localStorage.setItem("frequency2_7", '{{frequency2[7]}}'); </script>
+    <script> localStorage.setItem("frequency2_8", '{{frequency2[8]}}'); </script>
+    <script> localStorage.setItem("frequency2_9", '{{frequency2[9]}}'); </script>
+    <script> localStorage.setItem("frequency2_10", '{{frequency2[10]}}'); </script>
+   
+    <script> localStorage.setItem("frequency3_0", '{{frequency3[0]}}'); </script>
+    <script> localStorage.setItem("frequency3_1", '{{frequency3[1]}}'); </script>
+    <script> localStorage.setItem("frequency3_2", '{{frequency3[2]}}'); </script>
+    <script> localStorage.setItem("frequency3_3", '{{frequency3[3]}}'); </script>
+    <script> localStorage.setItem("frequency3_4", '{{frequency3[4]}}'); </script>
+    <script> localStorage.setItem("frequency3_5", '{{frequency3[5]}}'); </script>
+    <script> localStorage.setItem("frequency3_6", '{{frequency3[6]}}'); </script>
+    <script> localStorage.setItem("frequency3_7", '{{frequency3[7]}}'); </script>
+    <script> localStorage.setItem("frequency3_8", '{{frequency3[8]}}'); </script>
+    <script> localStorage.setItem("frequency3_9", '{{frequency3[9]}}'); </script>
+    <script> localStorage.setItem("frequency3_10", '{{frequency3[10]}}'); </script>
+
+    <script> localStorage.setItem("frequency4_0", '{{frequency4[0]}}'); </script>
+    <script> localStorage.setItem("frequency4_1", '{{frequency4[1]}}'); </script>
+    <script> localStorage.setItem("frequency4_2", '{{frequency4[2]}}'); </script>
+    <script> localStorage.setItem("frequency4_3", '{{frequency4[3]}}'); </script>
+    <script> localStorage.setItem("frequency4_4", '{{frequency4[4]}}'); </script>
+    <script> localStorage.setItem("frequency4_5", '{{frequency4[5]}}'); </script>
+    <script> localStorage.setItem("frequency4_6", '{{frequency4[6]}}'); </script>
+    <script> localStorage.setItem("frequency4_7", '{{frequency4[7]}}'); </script>
+    <script> localStorage.setItem("frequency4_8", '{{frequency4[8]}}'); </script>
+    <script> localStorage.setItem("frequency4_9", '{{frequency4[9]}}'); </script>
+    <script> localStorage.setItem("frequency4_10", '{{frequency4[10]}}'); </script>
+
+    <script> localStorage.setItem("frequency5_0", '{{frequency5[0]}}'); </script>
+    <script> localStorage.setItem("frequency5_1", '{{frequency5[1]}}'); </script>
+    <script> localStorage.setItem("frequency5_2", '{{frequency5[2]}}'); </script>
+    <script> localStorage.setItem("frequency5_3", '{{frequency5[3]}}'); </script>
+    <script> localStorage.setItem("frequency5_4", '{{frequency5[4]}}'); </script>
+    <script> localStorage.setItem("frequency5_5", '{{frequency5[5]}}'); </script>
+    <script> localStorage.setItem("frequency5_6", '{{frequency5[6]}}'); </script>
+    <script> localStorage.setItem("frequency5_7", '{{frequency5[7]}}'); </script>
+    <script> localStorage.setItem("frequency5_8", '{{frequency5[8]}}'); </script>
+    <script> localStorage.setItem("frequency5_9", '{{frequency5[9]}}'); </script>
+    <script> localStorage.setItem("frequency5_10", '{{frequency5[10]}}'); </script>
+
+    <script> localStorage.setItem("frequency6_0", '{{frequency6[0]}}'); </script>
+    <script> localStorage.setItem("frequency6_1", '{{frequency6[1]}}'); </script>
+    <script> localStorage.setItem("frequency6_2", '{{frequency6[2]}}'); </script>
+    <script> localStorage.setItem("frequency6_3", '{{frequency6[3]}}'); </script>
+    <script> localStorage.setItem("frequency6_4", '{{frequency6[4]}}'); </script>
+    <script> localStorage.setItem("frequency6_5", '{{frequency6[5]}}'); </script>
+    <script> localStorage.setItem("frequency6_6", '{{frequency6[6]}}'); </script>
+    <script> localStorage.setItem("frequency6_7", '{{frequency6[7]}}'); </script>
+    <script> localStorage.setItem("frequency6_8", '{{frequency6[8]}}'); </script>
+    <script> localStorage.setItem("frequency6_9", '{{frequency6[9]}}'); </script>
+    <script> localStorage.setItem("frequency6_10", '{{frequency6[10]}}'); </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<html>
+<body onload=myFunction()>
+    
+    
+   
+  <p id="demo" ></p>
+  <p>{{user_name}}</p>
+  <p>{{user_id}}</p>
+    
+    <script>
+    
+    function createItem() {
+      localStorage.grades = '{{grades}}';
+    }
+    
+    function myFunction() {
+  
+        var x = localStorage.getItem("grades");
+      document.getElementById("demo").innerHTML = x;
+    }
+   
+    $.post( "/test", {
+    javascript_data: data 
+    });
+
+    </script>
+    </body>  
+</script>
+</body>
+</html>
