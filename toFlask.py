@@ -7,6 +7,7 @@ import sqlite3
 import numpy
 import json
 import random
+import updateDB
 
 
 DATABASE = './students.db'
@@ -85,6 +86,7 @@ def result():
 
 @app.route("/dashboard")
 def dashboard():
+    updateGrade()
     topic_names=()
     student_grades=[]
     students_id = query_db('SELECT id FROM Student')
@@ -287,88 +289,90 @@ def dashboard():
     frequency6=frequency6)
 
 
-@app.route("/quiz")#,method=['POST','GET']
+@app.route("/quiz",methods=['POST','GET'])#,method=['POST','GET']
 def quiz():
     '''if request.method =="POST":
         pattern_questions=request.form["asd"]
     else:'''
-    if request.method=='POST':
-        print("asd")
-        jsdata = request.form['javascript_data']
-        print(jsdata)
-        
+ 
     
     usr_id=request.args.get('user_id',False) #it is better to use this then usr_id=request.args['user_id']
     usr_name=request.args.get('user_name',False)
+    print("user id is ")
+    print(usr_id)
+    print("user name is ")
+    print(usr_name)
+    if usr_id ==False or usr_name==False:
+        return redirect(url_for("login"))
 
     score =query_db('Select Score1,Score2,Score3,Score4,Score5,Score6 From Progress Where Student_Id='+str(usr_id))
     not_need_do_quiz=False
     progress=query_db('Select id From Progress')
    
-    last_progress=progress[-1][0]
+    last_progress=progress[-1][0]+1
 
 
     if score == []:#if the student has not done any exercies before
-        for i in range(18):
-                personalizedIndex = (random.sample(range(10),3)+random.sample(range(10,20),3)
+        personalizedIndex = (random.sample(range(10),3)+random.sample(range(10,20),3)
                 +random.sample(range(20,30),3)+random.sample(range(30,40),3)+random.sample(range(40,50),3)+
                 random.sample(range(50,60),3))
         insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,3,3,3,3,3,3))
+        print('Executed [] ')
     elif sum(score[-1])==18:
         not_need_do_quiz=True
         print(not_need_do_quiz)
-        for i in range(18):
-                personalizedIndex = (random.sample(range(10),3)+random.sample(range(10,20),3)
+        personalizedIndex = (random.sample(range(10),3)+random.sample(range(10,20),3)
                 +random.sample(range(20,30),3)+random.sample(range(30,40),3)+random.sample(range(40,50),3)+
                 random.sample(range(50,60),3))
         insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,3,3,3,3,3,3))
+        print("execute sum")
     elif score !=[]:       #if not empty
         topic = score[-1].index(min(score[-1]))+1   
     
         if topic ==1:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),9)+random.sample(range(10,20),2)
+            personalizedIndex = (random.sample(range(10),9)+random.sample(range(10,20),2)
                 +random.sample(range(20,30),2)+random.sample(range(30,40),2)+random.sample(range(40,50),2)+
                 random.sample(range(50,60),1)) #not inclusive the greater part, 9 questions for topic 1
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,9,2,2,2,2,1))
+            print("execute 1")
         elif topic ==2:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),9)
+            personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),9)
                 +random.sample(range(20,30),2)+random.sample(range(30,40),2)+random.sample(range(40,50),2)+
                 random.sample(range(50,60),1))
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,2,9,2,2,2,1))
+            print("execute 2")
         elif topic ==3:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
+            personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
                 +random.sample(range(20,30),9)+random.sample(range(30,40),2)+random.sample(range(40,50),2)+
                 random.sample(range(50,60),1))
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,2,2,9,2,2,1))
+            print("execute 3")
         elif topic ==4:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
+            personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
                 +random.sample(range(20,30),2)+random.sample(range(30,40),9)+random.sample(range(40,50),2)+
                 random.sample(range(50,60),1))
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,2,2,2,9,2,1))
+            print("execute 4")
         elif topic ==5:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
+            personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
                 +random.sample(range(20,30),2)+random.sample(range(30,40),2)+random.sample(range(40,50),9)+
                 random.sample(range(50,60),1))
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,2,2,2,2,9,1))
+            print("execute 5")
         elif topic ==6:
-            for i in range(18):
-                personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
+            personalizedIndex = (random.sample(range(10),2)+random.sample(range(10,20),2)
                 +random.sample(range(20,30),2)+random.sample(range(30,40),2)+random.sample(range(40,50),1)+
                 random.sample(range(50,60),9))
             insert_db("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
             (last_progress,2,2,2,2,1,9))
+            print("execute 5")
 
 
 
@@ -424,19 +428,12 @@ def func():
     
     dataReply = {'backend_data':'some_data'}
     
-    return "Success"
+    return "Success"# redirect(url_for('login'))
 
 def updateGrade():
-    totalStudents=len(query_db('Select * From Students'))
-
-    for id in range(totalStudents):
-        score= query_db('Select Score1,Score2,Score3,Score4,Score5,Score6,Student_Id From Progress where Student_id='+str(id))
-        #questions =query_db(''
-        #grade=[]
-        number_of_questions=[]
-        for i in range(6):
-            grade[i] =score[-1][i] +  score[-2][i]+score[-3][i]
-        
+    totalStudents=len(query_db('Select * From Student'))
+    totalTopic = len(query_db('Select * From Topic'))
+    updateDB.update(totalStudents,totalTopic)
 
     return 0
 

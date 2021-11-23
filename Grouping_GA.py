@@ -7,7 +7,7 @@ from itertools import combinations
 
 
 num_of_student = 40
-num_of_topic =10
+num_of_topic =6
 num_of_person_each_group = 4
 num_of_group = math.ceil(num_of_student/num_of_person_each_group) 
 

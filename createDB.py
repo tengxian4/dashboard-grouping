@@ -18,7 +18,7 @@ cur.execute('''CREATE TABLE Grade
 cur.execute('''CREATE TABLE Progress
                                 (Id integer primary key,Score1 integer,  Score2 integer,Score3 integer,
                                Score4 integer, Score5 integer, Score6 integer, Student_Id integer,Foreign Key(Student_id) REFERENCES Student(Id))''')
-				
+	
 cur.execute('''CREATE TABLE Question
                (Id integer, Question varchar,
                 Selection_A varchar,
@@ -42,10 +42,10 @@ for x in range(2,41):
 	x=x+1
 
 #insert Grade
-for x in range(1,41):
+'''for x in range(1,41):
 	for y in range(1,11):
 		cur.execute("INSERT INTO Grade (Student_Id,Topic_Id,Result) values(?,?,?)",(x,y,random.randint(0,10)))
-	
+'''	
 
 
 cur.execute("""INSERT INTO Topic VALUES(1,'Adjectives and adverbs')""")
@@ -197,10 +197,113 @@ cur.execute("""INSERT INTO Question VALUES(10,"drunk = _________"
 #the id same as progress id
 #for counting the grade
 cur.execute('''CREATE TABLE numberOfQuestion 
-				(Id integer, no_q1 integer, no_q2 integer, no_q3 integer, no_q4 integer, 
+				(Id integer primary key, no_q1 integer, no_q2 integer, no_q3 integer, no_q4 integer, 
 				no_q5 integer, no_q6 integer)''')
 
 
+for i in range(1,41):     
+    cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+        (i,3,3,3,3,3,3))
+
+
+for i in range(1,41):
+    cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(i,random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),i))
+
+
+for x in range(2):
+    for usr_id in range(1,41):
+        cur.execute('Select Score1,Score2,Score3,Score4,Score5,Score6 From Progress Where Student_Id='+str(usr_id))
+        score =cur.fetchall()
+
+        cur.execute('Select id From Progress')
+        progress=cur.fetchall()
+
+        last_progress=progress[-1][0]+1
+        
+        if score == []:#if the student has not done any exercies before
+            cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,3,3,3,3,3,3))
+            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id), values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),usr_id))
+        elif sum(score[-1])==18:
+            cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,3,3,3,3,3,3))
+            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id), values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),usr_id))
+        elif score !=[]:       #if not empty
+            topic = score[-1].index(min(score[-1]))+1   
+        
+            if topic ==1:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,9,2,2,2,2,1))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,9), random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,1),usr_id))
+            elif topic ==2:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,2,9,2,2,2,1))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,2), random.randint(0,9), random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,1),usr_id))
+            elif topic ==3:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,2,2,9,2,2,1))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,2), random.randint(0,2), random.randint(0,9), random.randint(0,2), random.randint(0,2), random.randint(0,1),usr_id))
+            elif topic ==4:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,2,2,2,9,2,1))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,9), random.randint(0,2), random.randint(0,1),usr_id))
+            elif topic ==5:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,2,2,2,2,9,1))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,9), random.randint(0,1),usr_id))
+            elif topic ==6:
+                cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
+                (last_progress,2,2,2,2,1,9))
+                cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
+                random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,2), random.randint(0,1), random.randint(0,9),usr_id))
+
+
+last_score=[]
+secondLast_score=[]
+thirdLast_score =[]
+
+for id in range(1,41):
+    cur.execute('Select id, score1,score2,score3,score4,score5,score6,Student_id From Progress Where Student_Id='+str(id))
+    r=cur.fetchall()
+    last_score.append(r[-1])
+    secondLast_score.append(r[-2])
+    thirdLast_score.append(r[-3])
+
+
+
+last_no_question=[]
+secondLast_no_question=[]
+thirdLast_no_question=[]
+
+
+for id in range(1,41):
+    cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(last_score[id-1][0]))
+    last_no_question=cur.fetchall()
+    
+    cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(secondLast_score[id-1][0]))
+    secondLast_no_question = cur.fetchall()
+    
+    cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(thirdLast_score[id-1][0]))
+    thirdLast_no_question=cur.fetchall()
+    student_grade=[]
+    for i in range(1,7):
+        student_grade.append(round((((last_score[id-1][i]+secondLast_score[id-1][i]+thirdLast_score[id-1][i])/(last_no_question[0][i-1]+secondLast_no_question[0][i-1]+thirdLast_no_question[0][i-1]))*10)))
+    
+    for i in range(1,7):
+        cur.execute('Select * From Grade Where Student_id='+str(id)+ ' AND Topic_id=' + str(i))
+        grades=cur.fetchall() 
+        if grades ==[]:
+            cur.execute('INSERT INTO Grade (Student_Id,Topic_Id,Result) values(?,?,?)',(id, i,student_grade[i-1]))
+        else:
+            cur.execute("Update Grade SET Result="+str(student_grade[i-1])+" Where Student_Id="+str(id) +" AND Topic_id="+str(i))
+            
 
 con.commit()
 con.close()
