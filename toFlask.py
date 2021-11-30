@@ -508,5 +508,9 @@ def admin_login():
     else:    
         return render_template("admin_login.html")
 
+@app.route("/chatbot")
+def chatbot():
+    return render_template('chatbot.html')
+
 if __name__=="__main__":
 	app.run(debug=True)

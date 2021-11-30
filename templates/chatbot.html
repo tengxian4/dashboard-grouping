@@ -1,0 +1,83 @@
+<html>
+  
+
+    <head>
+        
+      <title>Chat With Us</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="static/css/login_style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>  
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'> 
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+      </head>
+      <body class="body">
+        <h2 class="card-title mb-4 text-info text-center" id="title" style="color:white;font-size:80px;text-align:center;font-family: cursive;" >Welcome to English Learning Center</h2>
+       
+        
+        
+                                        
+<script src="https://cdn.jsdelivr.net/npm/rasa-webchat/lib/index.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://">
+<script>!(function () {
+  let e = document.createElement("script"),
+    t = document.head || document.getElementsByTagName("head")[0];
+  (e.src =
+    "https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"),
+    (e.async = !0),
+    (e.onload = () => {
+      window.WebChat.default(
+        { 
+          selector: "#webchat",
+    initPayload: "/get_started",
+    customData: {"language": "en"}, // arbitrary custom data. Stay minimal as this will be added to the socket
+    socketUrl: "http://localhost:5005",
+    customMessageDelay: (message) => {
+    let delay = message.length * 30;
+    if (delay > 3 * 200) delay = 3 * 200;
+    if (delay < 100) delay = 100;
+    return delay;
+  },
+    
+    socketPath: "/socket.io/",
+    title: "Street Bot",
+    tooltipPayload: "/get_started",
+    tooltip: true,    
+    tooltipDelay: 500,
+    subtitle: "Powered by XYZ",
+    connectingText: "Waiting for server...",
+    profileAvatar: "https://",
+    openLauncherImage: "https://",
+
+    params: {"storage": "session"}, 
+    
+    mainColor: "#ffd600",
+    userBackgroundColor: "#ffd600",
+    userTextColor: "#cde9ce",
+    showMessageDate: false,
+    inputTextFieldHint: "Hi.Type your message here...",
+    badge: " ",
+    displayUnreadCount: true,
+    isChatOpen: false,
+    embedded: false,
+    showCloseButton: true,
+    fullScreenMode: true,
+    showFullScreenButton: true,
+    docViewer: false,
+    
+   
+        },
+        null
+      );
+    }),
+    t.insertBefore(e, t.firstChild);
+})();
+
+
+
+</script>
+
+</body>
+</html>
