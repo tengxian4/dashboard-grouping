@@ -223,12 +223,12 @@ for x in range(2):
         if score == []:#if the student has not done any exercies before
             cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
                 (last_progress,3,3,3,3,3,3))
-            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id), values(?,?,?,?,?,?,?,?)",(last_progress,
+            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
                 random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),usr_id))
         elif sum(score[-1])==18:
             cur.execute("Insert INTO numberOfQuestion (Id,no_q1,no_q2,no_q3,no_q4,no_q5,no_q6) values(?,?,?,?,?,?,?)",
                 (last_progress,3,3,3,3,3,3))
-            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id), values(?,?,?,?,?,?,?,?)",(last_progress,
+            cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(last_progress,
                 random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),usr_id))
         elif score !=[]:       #if not empty
             topic = score[-1].index(min(score[-1]))+1   
