@@ -1,5 +1,6 @@
-from flask import Flask, redirect,url_for,render_template, request
+from flask import Flask, redirect,url_for,render_template, request,flash
 from flask import g
+from flask.helpers import flash
 
 
 import Grouping_GA
@@ -8,13 +9,16 @@ import numpy
 import json
 import random
 import updateDB
+import re
 
 
 DATABASE = './students.db'
 
 TOTAL_TOPIC=[1,2,3,4,5,6]
 
+
 app =Flask(__name__)
+app.secret_key='123456'
 
 @app.route("/")
 def home():
@@ -45,22 +49,32 @@ def insert_db(query, args=(), one=False):
     cur.close()
     return r
 
-@app.route("/displayGA")
+@app.route("/displayGA",methods=['POST','GET'])
 def GA():
+    
+    usr_name=request.args.get('username',False) #it is better to use this then usr_id=request.args['user_id']
+    
+    if usr_name ==False:
+        return redirect(url_for("admin_login"))	
+
     student_name = query_db('Select name From Student')
     group_list=Grouping_GA.run()
     '''grouping =zip(group_list,student_name)
     a =tuple(grouping)
     print(group_list)'''
 
-
-
-    return render_template("grouping.html",student_name= student_name, group_list=group_list)
+    return render_template("grouping.html",student_name= student_name, group_list=group_list,username=usr_name)
     #return "jello"
 
-@app.route("/result")
+@app.route("/result",methods=['POST','GET'])
 def result():
-   
+    
+    usr_name=request.args.get('username',False) #it is better to use this then usr_id=request.args['user_id']
+    
+    if usr_name ==False:
+        return redirect(url_for("admin_login"))
+
+
     topic_names=()
     student_grades=[]
     students_id = query_db('SELECT id FROM Student')
@@ -81,11 +95,17 @@ def result():
         topic_names=topic_names+ topic_name[0]
 
 
-    return render_template("tables.html",student_name= student_name, grades=student_grades,topic_names=topic_names)
+    return render_template("tables.html",student_name= student_name, grades=student_grades,topic_names=topic_names,username=usr_name)
 
 
-@app.route("/dashboard")
+@app.route("/dashboard",methods=['POST','GET'])
 def dashboard():
+    
+    usr_name=request.args.get('username',False) #it is better to use this then usr_id=request.args['user_id']
+    
+    if usr_name ==False:
+        return redirect(url_for("admin_login"))
+    
     updateGrade()
     topic_names=()
     student_grades=[]
@@ -286,7 +306,7 @@ def dashboard():
 
     return render_template("dashboard.html",student_name= student_name, grades=grades,topic_names=topic_names,
     frequency1=frequency1,frequency2=frequency2,frequency3=frequency3,frequency4=frequency4,frequency5=frequency5,
-    frequency6=frequency6)
+    frequency6=frequency6,username=usr_name)
 
 
 @app.route("/quiz",methods=['POST','GET'])#,method=['POST','GET']
@@ -310,7 +330,7 @@ def quiz():
     progress=query_db('Select id From Progress')
    
     last_progress=progress[-1][0]+1
-
+    print(last_progress)
 
     if score == []:#if the student has not done any exercies before
         personalizedIndex = (random.sample(range(10),3)+random.sample(range(10,20),3)
@@ -444,15 +464,49 @@ def login():
     if request.method=='POST':
         id = request.form['username']
         password=request.form['password']
-        user=query_db('Select * From Student Where id='+str(id)+' AND password='+str(password))
-        user_id=user[0][0]
-        user_name=user[0][1]
         
-        return redirect(url_for("quiz",user_id=id,user_name=user_name))
+        id_int_list=re.findall(r'[^0-9]',id)
+        #if the id contain characters or did not enter anything then pop up error msg
+        if id_int_list != [] or id=='':
+            flash('Looks like you don\'t have an account')
+            return redirect(url_for("login"))
+        
+
+        try:
+            user=query_db('Select * From Student Where id='+str(id)+' AND password='+str(password))
+            user_id=user[0][0]
+            user_name=user[0][1]
+        except IndexError:
+            user_id=False
+
+        #if dont have valid account, pop up error msg
+        if user_id!=False:
+            return redirect(url_for("quiz",user_id=id,user_name=user_name))
+        else:
+            flash('Looks like you don\'t have an account')
+            return redirect(url_for("login"))
     else:    
         return render_template("login.html")
 
+@app.route("/admin_login",methods =['POST','GET'])
+def admin_login():
+    if request.method=='POST':
+        username = request.form['username']
+        password=request.form['password'] 
+     
+        if username=='':
+            flash('Looks like you don\'t have an account')
+            return redirect(url_for("admin_login"))
+        
 
+        #if dont have valid account, pop up error msg
+        if username=='Admin' and password=='123':
+            return redirect(url_for("dashboard",username=username))
+        else:
+            flash('Looks like you don\'t have an account')
+            return redirect(url_for("admin_login"))
+    else:    
+        return render_template("admin_login.html")
 
 if __name__=="__main__":
 	app.run(debug=True)

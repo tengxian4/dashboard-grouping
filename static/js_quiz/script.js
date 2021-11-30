@@ -164,18 +164,19 @@ function viewResult(){
     
 
     var label = document.createElement("label");    //label
-    label.textContent = "Enter Name : ";
+    label.textContent = "Please click Submit ";
+    //label.textContent = "Enter Name : ";
 
-    var text = document.createElement("input");     //textbox for inputting user name
+    /*var text = document.createElement("input");     //textbox for inputting user name
     text.setAttribute("id","nameInput");
-    text.setAttribute("class","ml-3");
+    text.setAttribute("class","ml-3");*/
 
     var scoreButton = document.createElement("button");     //Submit User score
     scoreButton.setAttribute("class","btn btn-primary rounded-pill mb-2 ml-3 mt-2");
     scoreButton.textContent = "Submit";
     
     form.appendChild(label);
-    form.appendChild(text);
+    //form.appendChild(text);
     form.appendChild(scoreButton);
     
     localStorage.setItem("pattern_questions",JSON.stringify(pattern_questions));
