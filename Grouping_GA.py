@@ -3,6 +3,8 @@ from pyeasyga import pyeasyga
 import numpy 
 import math
 from itertools import combinations 
+import sqlite3
+
 
 
 
@@ -22,17 +24,16 @@ def run():
         x=x+1
 
     ga = pyeasyga.GeneticAlgorithm(seed_data,
-                                population_size=100,
-                                generations=50,
+                                population_size=30,
+                                generations=15,
                                 crossover_probability=0.8,
-                                mutation_probability=0.2,
-                                elitism=True,
-                                maximise_fitness=True)
+                                mutation_probability=0.01,
+                                maximise_fitness=True)#elitism=True,
 
     ga.create_individual = create_individual
     ga.crossover_function = crossover
     ga.mutate_function = mutate
-    ga.selection_function = selection
+    ga.selection_function = selection #default selection is tournament
 
     ga.fitness_function = fitness       # set the GA's fitness function
     ga.run()
@@ -45,6 +46,22 @@ def run():
         print (None)
 
 def get_data():
+    con = sqlite3.connect('Students.db')
+    cur=con.cursor()
+    data =[]
+    for i in range(1,num_of_student+1):
+        temp=[]
+        for j in range(1,num_of_topic+1):
+            cur.execute('Select * From Grade where student_id='+str(i) + ' AND topic_id='+str(j))
+            r = cur.fetchall()
+            temp.append(r[0][2])
+        data.append(temp)
+    con.close()
+    return data
+
+
+
+def get_data_random():
     x=0
     y=0
     data =[]
@@ -97,6 +114,7 @@ def mutate(individual):
 # define and set the GA's selection operation
 def selection(population):
     return random.choice(population)
+
 
 
 
