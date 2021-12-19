@@ -39,9 +39,14 @@ def run():
     ga.run()
 
     if ga.best_individual()[0]:
+        print("\n\nthe sum of Manhattan distance for 2 students chosen from 4 students for each group")
+        
+        print (ga.best_individual()[0])
+        print("\n\n")
+        
         print (ga.best_individual())
         group_list = ga.best_individual()[1]
-        return group_list
+        return group_list, ga.best_individual()[0]
     else:
         print (None)
 

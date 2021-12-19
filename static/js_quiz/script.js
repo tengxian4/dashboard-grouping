@@ -6,9 +6,7 @@ var questionEl = document.querySelector("#title");  //card title
 var quizContent = document.querySelector("#quizContent");   //Question options div
 var resultDiv = document.querySelector("#answer");  //Div for showing answer is correct/wrong
 var scoreDiv = document.querySelector("#score");    //Div for Displying final scores when quiz completed
-var highscoresDiv = document.querySelector("#highscores");  //Div for showing highscores
-var navhighscorelink = document.querySelector("#navhighscorelink");     //highscore navigation link
-var navlink = document.getElementById("navhighscorelink");
+
 
 var secondsLeft = 100, questionIndex = 0,correct = 0 ;
 var totalQuestions =18;
@@ -164,7 +162,7 @@ function viewResult(){
     
 
     var label = document.createElement("label");    //label
-    label.textContent = "Please click Submit ";
+    label.textContent = "Please click Submit to submit and logout";
     //label.textContent = "Enter Name : ";
 
     /*var text = document.createElement("input");     //textbox for inputting user name
@@ -192,161 +190,8 @@ function viewResult(){
     scoreButton.addEventListener("click",func);//,storeScores);  //Submit button click event listener calls storeScores()
 }
 
-//Function to store highscores
-function storeScores(event){
-    
-    
-
-    event.preventDefault();
-    var userName = document.querySelector("#nameInput").value.trim();
-
-    if(userName === null || userName === '') {
-        alert("Please enter user name");
-        return;
-     }
-
-      //Create user object for storing highscore
-        var user = {
-            name : userName,
-            score : correct
-        }
-
-        console.log(user);
-
-        previousScores = JSON.parse(localStorage.getItem("previousScores"));    //get User highscores array in localStorage if exists
-        
-        if(previousScores){
-            previousScores.push(user); //Push new user scores in array in localStorage
-        }
-        else{
-            previousScores = [user];    //If No user scores stored in localStorage, create array to store user object
-        }
-        
-        // set new submission
-        localStorage.setItem("previousScores",JSON.stringify(previousScores));
-       
-        showHighScores(); // Called function to display highscores
-
-}
 
 
-//function to show highscores
-function showHighScores(){
-   
-    questionEl.innerHTML = "Highscores";
-    questionEl.setAttribute("class","text-center text-info");
-    questionEl.style.display = "block";
-    
-    quizContent.style.display = "none";
-    scoreDiv.style.display = "none";
-
-        // creates a <table> element and a <tbody> element
-        var tbl = document.createElement("table");
-        tbl.setAttribute("id","table");
-        tbl.style.textAlign = "center";
-
-        var tblBody = document.createElement("tbody");
-
-        var row = document.createElement("tr");
-        
-        var heading1 = document.createElement("th");    //table heading 1
-        var headingText1 = document.createTextNode("Name");
-        heading1.setAttribute("class","bg-info");
-        heading1.appendChild(headingText1);
-        row.appendChild(heading1);
-
-        var heading2 = document.createElement("th");    //table heading 2
-        var headingText2 = document.createTextNode("Score");
-        heading2.appendChild(headingText2);
-        heading2.setAttribute("class","bg-info");
-        row.appendChild(heading2);
-
-        tblBody.appendChild(row);
-
-        var userLength = 0;
-        if(previousScores) {
-            userLength = previousScores.length;     //PreviousScores array length stored in localStorage 
-        }
-        
-        // creating all cells
-        for (var i = 0; i < userLength ; i++) {
-            
-            // creates a table row
-             var row = document.createElement("tr");
-        
-            var uname = previousScores[i].name;
-            var uscore = previousScores[i].score;
-            
-            // Create a <td> element and a text node, make the textnode the contents of the <td>, and put the <td> at the end of the table row
-            var cell1 = document.createElement("td");
-            var cellText1 = document.createTextNode(uname);
-            cell1.appendChild(cellText1);
-            row.appendChild(cell1);
-
-            var cell2 = document.createElement("td");
-            var cellText2 = document.createTextNode(uscore);
-            cell2.appendChild(cellText2);
-            row.appendChild(cell2);
-      
-            // add the row to the end of the table body
-            tblBody.appendChild(row);
-        }
-
-        // put the <tbody> in the <table>
-        if(userLength > 0){
-            tbl.appendChild(tblBody);
-        }
-        // appends <table> into <body>
-
-        // sets the border attribute of tbl to 2;
-        tbl.setAttribute("border", "2");
-        tbl.setAttribute("width","100%");
-        
-        highscoresDiv.appendChild(tbl);
-
-        var btnDiv = document.createElement("div");
-        btnDiv.style.textAlign = "center";
-        highscoresDiv.appendChild(btnDiv);
- 
-    navlink.style.display = "none";
-
-    // Go Back button to go to start page
-    var goback = document.createElement("button");
-    goback.setAttribute("class","btn btn-primary rounded-pill mb-2 mt-4 ml-2");
-    goback.textContent = "Go Back";
-    btnDiv.appendChild(goback);
-    
-    // Event listener for go back button opens index.html page
-    goback.addEventListener("click",function(){
-        window.location= "index.html"; 
-    });
-
-    // Clear Highscores button : clears localStorage
-    var clearscores = document.createElement("button");
-    clearscores.setAttribute("class","btn btn-primary rounded-pill mb-2 mt-4 ml-2");
-    clearscores.textContent = "Clear Highscores";
-    btnDiv.appendChild(clearscores);
-    
-    // Event Listener for clear highscores button
-    clearscores.addEventListener("click",function(){
-        localStorage.clear();
-        var table = document.querySelector("#table");
-        table.style.display = "none";
-    });
-   
-}
-
-// Navigation link 'Highscores' event listener
-navhighscorelink.addEventListener("click",function(){
-    
-    mainContent.style.display = "none";  
-    navlink.style.display = "none";
-    
-    previousScores = JSON.parse(localStorage.getItem("previousScores"));
-    
-    showHighScores(); //Calls function to show highscores
-
-});
 
 //Start button event listener on start page which starts quiz
 startButton.addEventListener("click",startQuiz);

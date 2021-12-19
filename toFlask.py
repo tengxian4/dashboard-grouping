@@ -5,20 +5,27 @@ from flask.helpers import flash
 
 import Grouping_GA
 import sqlite3
-import numpy
+import numpy as np
 import json
 import random
+import performance
 import updateDB
 import re
-
+import average_distance
+import getProgress
+import checkDB
+import time
 
 DATABASE = './students.db'
 
 TOTAL_TOPIC=[1,2,3,4,5,6]
 
+group_list =[]
+
 
 app =Flask(__name__)
 app.secret_key='123456'
+
 
 @app.route("/")
 def home():
@@ -49,6 +56,56 @@ def insert_db(query, args=(), one=False):
     cur.close()
     return r
 
+@app.route("/resultByGroup",methods=['POST','GET'])
+def resultByGroup():
+    
+
+    # get the performance
+    p_name= performance.performance_according_name()
+    p_id =performance.performance_according_id()
+    overall_dist = average_distance.dist()
+    num_group=max(group_list)+1
+    overall_dist = int(overall_dist*num_group)
+
+    con =sqlite3.connect('Students.db')
+    cur=con.cursor()
+    
+    dist=request.args.get('dist',False)
+    
+    
+    cur.execute('Select name From Student')
+    student_name =cur.fetchall()
+    
+    #find the member in the same group
+    values = np.array(group_list)
+    each_group=[]
+    
+    for i in range(max(group_list)+1):
+        each_group.append(np.where(values == i)[0])
+        
+    
+    #get the result for each group
+    # the resultByGroup will have student id, student name, score for topic 1-6
+    # using 3D array 
+    
+    all_student_result_by_group =[]
+    for eg in each_group:
+        resultByGroup=[]
+        for i in eg:    
+            result_per_student=[]
+            result_per_student.append(i+1)
+            result_per_student.append(student_name[i][0])
+            for t in TOTAL_TOPIC:
+                cur.execute('Select result from grade Where student_id='+str(i+1)+" And Topic_id="+str(t))
+                r=cur.fetchall()   
+                result_per_student.append(r[0][0])
+            resultByGroup.append(result_per_student)
+            
+        all_student_result_by_group.append(resultByGroup)
+    return render_template("resultByGroup.html",all_student_result_by_group=all_student_result_by_group,dist=dist,p_name=p_name,p_id=p_id,overall_dist=overall_dist)
+
+
+
 @app.route("/displayGA",methods=['POST','GET'])
 def GA():
     
@@ -58,12 +115,13 @@ def GA():
         return redirect(url_for("admin_login"))	
 
     student_name = query_db('Select name From Student')
-    group_list=Grouping_GA.run()
+    inner_group_list,dist=Grouping_GA.run()
     '''grouping =zip(group_list,student_name)
     a =tuple(grouping)
     print(group_list)'''
-
-    return render_template("grouping.html",student_name= student_name, group_list=group_list,username=usr_name)
+    global group_list
+    group_list =inner_group_list
+    return render_template("grouping.html",student_name= student_name, group_list=inner_group_list,username=usr_name,dist=dist)
     #return "jello"
 
 @app.route("/result",methods=['POST','GET'])
@@ -147,174 +205,46 @@ def dashboard():
         grades.append(list(g))
     print(grades)
 
-    frequency1=[0,0,0,0,0,0,0,0,0,0,0]
+    sum1=0
     for g in grades[0]:
-        if g==0:
-            frequency1[0]=frequency1[0]+1
-        elif g==1:
-            frequency1[1]=frequency1[1]+1
-        elif g==2:
-            frequency1[2]=frequency1[2]+1
-        elif g==3:
-            frequency1[3]=frequency1[3]+1
-        elif g==4:
-            frequency1[4]=frequency1[4]+1
-        elif g==5:
-            frequency1[5]=frequency1[5]+1
-        elif g==6:
-            frequency1[6]=frequency1[6]+1
-        elif g==7:
-            frequency1[7]=frequency1[7]+1
-        elif g==8:
-            frequency1[8]=frequency1[8]+1
-        elif g==9:
-            frequency1[9]=frequency1[9]+1
-        elif  g==10:
-            frequency1[10]=frequency1[10]+1   
+        sum1=sum1+g
 
-    print(frequency1)
-    #frequency1 for topic 1
-
-    frequency2=[0,0,0,0,0,0,0,0,0,0,0]
+    sum2=0
     for g in grades[1]:
-        if g==0:
-            frequency2[0]=frequency2[0]+1
-        elif g==1:
-            frequency2[1]=frequency2[1]+1
-        elif g==2:
-            frequency2[2]=frequency2[2]+1
-        elif g==3:
-            frequency2[3]=frequency2[3]+1
-        elif g==4:
-            frequency2[4]=frequency2[4]+1
-        elif g==5:
-            frequency2[5]=frequency2[5]+1
-        elif g==6:
-            frequency2[6]=frequency2[6]+1
-        elif g==7:
-            frequency2[7]=frequency2[7]+1
-        elif g==8:
-            frequency2[8]=frequency2[8]+1
-        elif g==9:
-            frequency2[9]=frequency2[9]+1
-        elif  g==10:
-            frequency2[10]=frequency2[10]+1  
+        sum2=sum2+g
 
-
-    frequency3=[0,0,0,0,0,0,0,0,0,0,0]
+    sum3=0
     for g in grades[2]:
-        if g==0:
-            frequency3[0]=frequency3[0]+1
-        elif g==1:
-            frequency3[1]=frequency3[1]+1
-        elif g==2:
-            frequency3[2]=frequency3[2]+1
-        elif g==3:
-            frequency3[3]=frequency3[3]+1
-        elif g==4:
-            frequency3[4]=frequency3[4]+1
-        elif g==5:
-            frequency3[5]=frequency3[5]+1
-        elif g==6:
-            frequency3[6]=frequency3[6]+1
-        elif g==7:
-            frequency3[7]=frequency3[7]+1
-        elif g==8:
-            frequency3[8]=frequency3[8]+1
-        elif g==9:
-            frequency3[9]=frequency3[9]+1
-        elif  g==10:
-            frequency3[10]=frequency3[10]+1 
+        sum3=sum3+g
 
 
-    frequency4=[0,0,0,0,0,0,0,0,0,0,0]
+    sum4=0
     for g in grades[3]:
-        if g==0:
-            frequency4[0]=frequency4[0]+1
-        elif g==1:
-            frequency4[1]=frequency4[1]+1
-        elif g==2:
-            frequency4[2]=frequency4[2]+1
-        elif g==3:
-            frequency4[3]=frequency4[3]+1
-        elif g==4:
-            frequency4[4]=frequency4[4]+1
-        elif g==5:
-            frequency4[5]=frequency4[5]+1
-        elif g==6:
-            frequency4[6]=frequency4[6]+1
-        elif g==7:
-            frequency4[7]=frequency4[7]+1
-        elif g==8:
-            frequency4[8]=frequency4[8]+1
-        elif g==9:
-            frequency4[9]=frequency4[9]+1
-        elif  g==10:
-            frequency4[10]=frequency4[10]+1 
+        sum4=sum4+g
 
-
-    frequency5=[0,0,0,0,0,0,0,0,0,0,0]
+    sum5=0
     for g in grades[4]:
-        if g==0:
-            frequency5[0]=frequency5[0]+1
-        elif g==1:
-            frequency5[1]=frequency5[1]+1
-        elif g==2:
-            frequency5[2]=frequency5[2]+1
-        elif g==3:
-            frequency5[3]=frequency5[3]+1
-        elif g==4:
-            frequency5[4]=frequency5[4]+1
-        elif g==5:
-            frequency5[5]=frequency5[5]+1
-        elif g==6:
-            frequency5[6]=frequency5[6]+1
-        elif g==7:
-            frequency5[7]=frequency5[7]+1
-        elif g==8:
-            frequency5[8]=frequency5[8]+1
-        elif g==9:
-            frequency5[9]=frequency5[9]+1
-        elif  g==10:
-            frequency5[10]=frequency5[10]+1 
+        sum5=sum5+g
 
-
-    frequency6=[0,0,0,0,0,0,0,0,0,0,0]
+    sum6=0
     for g in grades[5]:
-        if g==0:
-            frequency6[0]=frequency6[0]+1
-        elif g==1:
-            frequency6[1]=frequency6[1]+1
-        elif g==2:
-            frequency6[2]=frequency6[2]+1
-        elif g==3:
-            frequency6[3]=frequency6[3]+1
-        elif g==4:
-            frequency6[4]=frequency6[4]+1
-        elif g==5:
-            frequency6[5]=frequency6[5]+1
-        elif g==6:
-            frequency6[6]=frequency6[6]+1
-        elif g==7:
-            frequency6[7]=frequency6[7]+1
-        elif g==8:
-            frequency6[8]=frequency6[8]+1
-        elif g==9:
-            frequency6[9]=frequency6[9]+1
-        elif  g==10:
-            frequency6[10]=frequency6[10]+1 
+        sum6=sum6+g
 
-    return render_template("dashboard.html",student_name= student_name, grades=grades,topic_names=topic_names,
-    frequency1=frequency1,frequency2=frequency2,frequency3=frequency3,frequency4=frequency4,frequency5=frequency5,
-    frequency6=frequency6,username=usr_name)
+    num_of_student=query_db('Select id from Student')
+    num_of_student=len(num_of_student)
+    avg1 = sum1/num_of_student
+    avg2=sum2/num_of_student
+    avg3=sum3/num_of_student
+    avg4=sum4/num_of_student
+    avg5=sum5/num_of_student
+    avg6=sum6/num_of_student
+   
+
+    return render_template("dashboard.html",student_name= student_name, grades=grades,topic_names=topic_names,avg1=avg1,avg2=avg2,avg3=avg3,avg4=avg4,avg5=avg5,avg6=avg6,username=usr_name)
 
 
 @app.route("/quiz",methods=['POST','GET'])#,method=['POST','GET']
 def quiz():
-    '''if request.method =="POST":
-        pattern_questions=request.form["asd"]
-    else:'''
- 
     
     usr_id=request.args.get('user_id',False) #it is better to use this then usr_id=request.args['user_id']
     usr_name=request.args.get('user_name',False)
@@ -394,8 +324,9 @@ def quiz():
             (last_progress,2,2,2,2,1,9))
             print("execute 5")
 
-
-
+    r=query_db('select * from numberofquestion ORDER BY ID DESC LIMIT 1')
+    print(r) 
+    
     return render_template("quiz.html",usr_id=usr_id,usr_name=usr_name,personalizedIndex=personalizedIndex,not_need_do_quiz=not_need_do_quiz )
 
 
@@ -447,7 +378,7 @@ def func():
     insert_db("INSERT INTO Progress (Id, Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(progress_id,score1,score2,score3,score4,score5,score6,user_id))
     
     dataReply = {'backend_data':'some_data'}
-    
+    time.sleep(2)
     return "Success"# redirect(url_for('login'))
 
 def updateGrade():
@@ -461,6 +392,8 @@ def updateGrade():
 
 @app.route("/login",methods =['POST','GET'])
 def login():
+    time.sleep(2)
+    checkDB.check()
     if request.method=='POST':
         id = request.form['username']
         password=request.form['password']
@@ -481,7 +414,7 @@ def login():
 
         #if dont have valid account, pop up error msg
         if user_id!=False:
-            return redirect(url_for("quiz",user_id=id,user_name=user_name))
+            return redirect(url_for("progress",user_id=id,user_name=user_name))
         else:
             flash('Looks like you don\'t have an account')
             return redirect(url_for("login"))
@@ -508,9 +441,22 @@ def admin_login():
     else:    
         return render_template("admin_login.html")
 
+
+@app.route("/progress",methods =['POST','GET'])
+def progress():
+    checkDB.check()
+    usr_id=request.args.get('user_id',False) #it is better to use this then usr_id=request.args['user_id']
+    usr_name=request.args.get('user_name',False)
+    
+    progress,no_question=getProgress.get_progress(usr_id)
+    
+    return render_template('progress.html',progress=progress,no_question=no_question,zip=zip,usr_id=usr_id,usr_name=usr_name)
+
 @app.route("/chatbot")
 def chatbot():
     return render_template('chatbot.html')
+
+         
 
 if __name__=="__main__":
 	app.run(debug=True)
