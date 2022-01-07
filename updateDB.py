@@ -13,6 +13,9 @@ def update(totalStudent, totalTopic):
     for id in range(1,totalStudent+1):
         cur.execute('Select id, score1,score2,score3,score4,score5,score6,Student_id From Progress Where Student_Id='+str(id))
         r=cur.fetchall()
+        
+        
+
         last_score.append(r[-1])
         secondLast_score.append(r[-2])
         thirdLast_score.append(r[-3])
@@ -27,10 +30,14 @@ def update(totalStudent, totalTopic):
     for id in range(1,totalStudent+1):
         cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(last_score[id-1][0]))
         last_no_question=cur.fetchall()
+        if len(last_no_question)==0:
+            break
         
         cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(secondLast_score[id-1][0]))
         secondLast_no_question = cur.fetchall()
-        
+        if len(secondLast_score)==0:
+            break
+
         cur.execute('Select no_q1,no_q2,no_q3,no_q4,no_q5,no_q6 From numberOfQuestion Where id='+str(thirdLast_score[id-1][0]))
         thirdLast_no_question=cur.fetchall()
         student_grade=[]

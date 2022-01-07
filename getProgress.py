@@ -10,6 +10,7 @@ def get_data(student_id):
     cur.execute('SELECT * FROM Progress Where Student_id ='+str(student_id)+ ' ORDER BY ID DESC LIMIT 3')
     r = cur.fetchall()
     
+
     # get number of question
     all_progress=[]
     for i in range(3):

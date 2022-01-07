@@ -6,7 +6,7 @@ from itertools import combinations
 import sqlite3
 
 
-
+not_finish_exercise_student=[]
 
 num_of_student = 40
 num_of_topic =6
@@ -19,13 +19,13 @@ def run():
 
     x=0
     seed_data =[]
-    for x in range(num_of_student):
+    for x in range(num_of_student-len(not_finish_exercise_student)):
         seed_data.append(int(x/num_of_person_each_group))
         x=x+1
 
     ga = pyeasyga.GeneticAlgorithm(seed_data,
-                                population_size=30,
-                                generations=15,
+                                population_size=20,
+                                generations=10,
                                 crossover_probability=0.8,
                                 mutation_probability=0.01,
                                 maximise_fitness=True)#elitism=True,
@@ -46,6 +46,8 @@ def run():
         
         print (ga.best_individual())
         group_list = ga.best_individual()[1]
+        if len(not_finish_exercise_student)!=0:
+            return group_list, ga.best_individual()[0],not_finish_exercise_student
         return group_list, ga.best_individual()[0]
     else:
         print (None)
@@ -54,11 +56,15 @@ def get_data():
     con = sqlite3.connect('Students.db')
     cur=con.cursor()
     data =[]
+    global not_finish_exercise_student
+    not_finish_exercise_student=[]
     for i in range(1,num_of_student+1):
         temp=[]
         for j in range(1,num_of_topic+1):
             cur.execute('Select * From Grade where student_id='+str(i) + ' AND topic_id='+str(j))
             r = cur.fetchall()
+            if len(r)==0:
+                not_finish_exercise_student.append(i)
             temp.append(r[0][2])
         data.append(temp)
     con.close()

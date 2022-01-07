@@ -197,7 +197,7 @@ function viewResult(){
 startButton.addEventListener("click",startQuiz);
 
 
-function func(event){
+/*function func(event){
     event.preventDefault();
     var xml = new XMLHttpRequest();
     xml.open("POST","{{url_for('func')}}",true); 
@@ -213,4 +213,4 @@ function func(event){
         'page_data':pattern_questions
     });
 
-    xml.send(dataSend);} 
+    xml.send(dataSend);} */
