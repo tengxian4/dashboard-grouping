@@ -1,5 +1,6 @@
 var trafficchart = document.getElementById("trafficflow");
 var saleschart = document.getElementById("sales");
+var performance = document.getElementById("group_performance");
 Chart.defaults.font.size = 16;
 
 // new
@@ -83,7 +84,49 @@ options: {
 }
 });
 
+var myChart3 = new Chart(performance, {
 
+    type: 'bar',
+    
+    
+    data: {
+        labels: [ 'AI-Grouping','Average','Alphabetical Order','Group According to ID'],
+        
+        datasets: [{
+                label: 'Distance',
+                data: [localStorage.getItem("dist"), localStorage.getItem("overall_dist"),localStorage.getItem("p_name"), localStorage.getItem("p_id")],
+                backgroundColor: "rgba(76, 175, 80, 0.5)",
+                borderColor: "#6da252",
+                borderWidth: 1,
+        }]
+    }, 
+               
+    options: {
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart',
+        },
+        
+        
+        plugins: {
+          
+            legend: {
+                display: false,
+                position: 'top',
+                
+            },
+            
+            title: {
+                display: true,
+                text: 'Average Score',
+                position: 'left',
+            },
+        },
+       
+    }
+    });
+    
+    
 
 function createItem() {
       localStorage.setObject('grades', '{{grades}}');

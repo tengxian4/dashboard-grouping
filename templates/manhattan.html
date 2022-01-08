@@ -1,0 +1,310 @@
+<html>
+  <head>
+
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+      
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      </style>
+  
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Tables | Bootstrap Simple Admin Template</title>
+      
+  
+      <link href="{{ url_for('static',filename='vendor/fontawesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ url_for('static',filename='vendor/fontawesome/css/solid.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ url_for('static',filename='vendor/fontawesome/css/brands.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ url_for('static',filename='vendor/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
+      <link href="{{ url_for('static',filename='css/master.css')}}" rel="stylesheet" type="text/css">
+  </head>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<body>
+  <a href="{{url_for('manhattan')}}" class="btn btn-success" style="position:absolute;top: 8px; left:16px; ">Manhattan Analysis</a>
+      
+  <div class="wrapper">
+      <!-- sidebar navigation component -->
+         
+     
+<div id="body" class="active">
+
+<nav class="navbar navbar-expand-lg navbar-white bg-white">
+  <a href="{{url_for('resultByGroup',dist=dist)}}" class="btn btn-success" style="position:absolute;top: 8px; left:16px; ">Go Back</a>
+                         
+  <button type="button" id="sidebarCollapse" class="btn btn-light">
+      <i class="fas fa-bars"></i><span></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="nav navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+              <div class="nav-dropdown">
+                 
+                  
+              </div>
+          </li>
+          <li class="nav-item dropdown">
+              <div class="nav-dropdown">
+                  <a href="#" id="nav2" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-user"></i> <span>Admin</span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end nav-link-menu">
+                      <ul class="nav-list">
+                          <li><a href="http://127.0.0.1:5000/admin_login" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </li>
+      </ul>
+  </div>
+</nav>
+<p style="font-size: 60px;">Manhattan Distance between ticked students: </p>
+<input type=" text" id="total" style="border: 2px solid white; font-size: 50px;background-color:darkkhaki ;text-align: center;" value="0" />
+
+
+<div id="GroupList">
+ 
+
+  {%for result_per_group in all_student_result_by_group%}
+
+  <div id="dataTables-example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+    
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-hover dataTable no-footer dtr-inline collapsed" id="dataTables-example" width="100%"
+          role="grid" aria-describedby="dataTables-example_info" style="width: 100%;"></table>
+        <table class="table table-hover" id="dataTables-example" width="100%">
+          <p style="font-size: 40px;">Group {{all_student_result_by_group.index(result_per_group)+1}} </p>
+         
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Adjectives and adverbs</th>
+              <th>Articles a, an, the</th>
+              <th>Conditional sentences (if-clauses and main clauses)</th>
+              <th>Endings of nouns and verbs</th>
+              <th>Plural, 's, one</th>
+              <th>Irregular and regular verbs</th>
+
+            </tr>
+          </thead>
+          <p > <!--id='calcAndShowTotal'-->
+            <tbody > 
+
+
+              {%for stu in result_per_group%}
+
+              <tr>
+                {% set res=stu.copy() %}
+
+                {% set temp=res.pop(0) %}
+                {% set temp=res.pop(0) %}
+                {% set res =res |string %}
+                {% set strRes =[] %}
+
+                {% set strRes =[] %}
+                {% set a =res.split(',') %}
+               
+                {% set res= res.replace('[','') %}
+                {% set res= res.replace(']','') %}
+                {% set strRes= res.split(',') %}
+
+                
+
+                <td><input class="single-checkbox" type="checkbox"
+                    id="Group_{{all_student_result_by_group.index(result_per_group)+1}}_{{stu[0]}}"
+                    value="Group_{{all_student_result_by_group.index(result_per_group)+1}}_{{stu[0]}}"
+                    data-price="{{strRes}}"" />
+                </td>
+                <td>{{stu[0]}}</td>
+                <td>{{stu[1]}} </td>
+                <td>{{stu[2]}} </td>
+                <td>{{stu[3]}} </td>
+                <td>{{stu[4]}} </td>
+                <td>{{stu[5]}} </td>
+                <td>{{stu[6]}} </td>
+                <td>{{stu[7]}} </td>
+
+              </tr>
+          </p>
+          {%endfor%}
+
+
+          </tbody>
+
+        </table>
+        
+                  {%endfor%}
+
+
+
+      </div>
+      
+    </div>
+    </div>
+      <script>
+
+        // JavaScript Program to find sum of Manhattan distance
+        // between all the pairs of given points
+
+        // Return the sum of distance between all
+        // the pair of points.
+        function distancesum(x, y, clbk) {
+          var len,
+		d, v,
+		i;
+
+	len = x.length;
+	
+	d = 0;
+	if ( clbk ) {
+		for ( i = 0; i < len; i++ ) {
+			v = clbk( x[i], i, 0 ) - clbk( y[i], i, 1 );
+			d += ( v < 0 ) ? -v : v;
+		}
+	} else {
+		for ( i = 0; i < len; i++ ) {
+			v = x[ i ] - y[ i ];
+			d += ( v < 0 ) ? -v : v;
+		}
+	}
+ 
+ 
+	return d;
+        }
+
+        //only two input allowed
+        $('input[type=checkbox]').change(function(e){
+     if ($('input[type=checkbox]:checked').length > 2) {
+          $(this).prop('checked', false)
+          alert("allowed only 2");
+     }
+  })
+  
+  function calcAndShowTotal(){
+          //var total = [];
+          var total_js=0;
+          var two_array_js = new Array(2);
+
+for (var i = 0; i < two_array_js.length; i++) {
+  two_array_js[i] = new Array(6);
+}
+num_array=0;
+var x=[];
+            var y=[];
+          $('#GroupList :checkbox:checked').each(function () {
+             
+            num_array=num_array+1;
+            //array_js=($(this).data('price')).split(",");
+            var array_js = ($(this).data('price')).split(",") ||0;
+           
+            //alert( array_js);
+            if (num_array==1){
+            // x=array_js;
+            for (let i =0;i<array_js.length;i++){
+               //clean the string
+              if (i==0){
+                array_js[0]=array_js[0].replace('[','');
+              }
+              if (i==(array_js.length-1)){
+                array_js[array_js.length-1]=array_js[array_js.length-1].replace(']','');
+              }
+              array_js[i]=array_js[i].replace('\'','');
+              array_js[i]=array_js[i].replace('\'','');
+
+              x.push(parseInt(array_js[i]));
+            }
+            
+            //alert(x);
+            }
+
+            if (num_array==2){
+             //y=array_js;
+
+
+             for (let i =0;i<array_js.length;i++){
+               //clean the string
+              if (i==0){
+                array_js[0]=array_js[0].replace('[','');
+              }
+              if (i==(array_js.length-1)){
+                array_js[array_js.length-1]=array_js[array_js.length-1].replace(']','');
+              }
+              array_js[i]=array_js[i].replace('\'','');
+              array_js[i]=array_js[i].replace('\'','');
+              y.push(parseInt(array_js[i]));
+            }
+            
+            //alert(y);
+            
+            }
+
+            
+            
+            
+            /*array_js=array_js.replace('[','')
+            array_js=array_js.replace(']','')*/
+           
+            
+           
+            
+          });
+          /*if (($(this).data('price'))!=0)
+            alert(($(this).data('price')))*/
+
+            $('#total').val(distancesum(x,y,0)||0 );
+
+        }   
+                    
+            
+
+
+        $('#GroupList :checkbox').change(calcAndShowTotal).change();
+     
+        /*function calcAndShowTotal_2() {
+          alert('asd')
+          $('#Group_2 :checkbox:checked').each(function () {
+           var total = ($(this).data('price')).split(",").map(Number) || 0;
+            alert($(this).data('price'));
+          });
+          $('#total_2').val(total);
+        }
+        $('#Group_2 :checkbox').change(calcAndShowTotal_2).change();
+*/
+
+        // Driver code
+
+        let x = [-1, 1, 3, 2];
+        let y = [5, 6, 5, 3];
+        let n = x.length;
+
+        document.write(distancesum(x, y, n));
+
+            // This code is contributed by sanjoy_62.
+      </script>
+ <script src="static/vendor/jquery/jquery.min.js"></script>
+ <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ <script src="static/vendor/datatables/datatables.min.js"></script>
+ <script src="static/js/initiate-datatables.js"></script>
+      <script src="static/vendor/jquery/jquery.min.js"></script>
+    </div>
+    
+  </body>
+</html>

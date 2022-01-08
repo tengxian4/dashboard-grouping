@@ -1,162 +1,19 @@
-<!doctype html>
-<!-- 
-* Bootstrap Simple Admin Template
-* Version: 2.1
-* Author: Alexis Luna
-* Website: https://github.com/alexis-luna/bootstrap-simple-admin-template
--->
-<html lang="en">
-
-<head>
-
-  <style>
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-    }
+<html>
+    <head>
+        <link href="{{ url_for('static',filename='vendor/fontawesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='vendor/fontawesome/css/solid.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='vendor/fontawesome/css/brands.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='css/master.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ url_for('static',filename='vendor/flagiconcss/css/flag-icon.min.css') }}" rel="stylesheet" type="text/css">
     
-    td, th {
-      border: 1px solid #dddddd;
-      text-align: left;
-      padding: 8px;
-    }
-    
-    tr:nth-child(even) {
-      background-color: #dddddd;
-    }
-    </style>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tables | Bootstrap Simple Admin Template</title>
-    
-
-    <link href="{{ url_for('static',filename='vendor/fontawesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='vendor/fontawesome/css/solid.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='vendor/fontawesome/css/brands.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='vendor/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ url_for('static',filename='css/master.css')}}" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-    <div class="wrapper">
-        <!-- sidebar navigation component -->
-        <nav id="sidebar" class="active">
-            <div class="sidebar-header">
-                <img src="static/img/bootstraper-logo.png" alt="bootraper logo" class="app-logo">
-            </div>
-            <ul class="list-unstyled components text-secondary">
-                <li>
-                    <a href="{{url_for('dashboard',username=username)}}"><i class="fas fa-home"></i>Dashboard</a>
-                </li>
-                
-                <li>
-                    <a href="{{url_for('result',username=username)}}"><i class="fas fa-table"></i>Student Result</a>
-                </li>
-             
-           
-              
-              
-            </ul>
-        </nav>
-        <!-- end of sidebar component -->
-        <div id="body" class="active">
-            <!-- navbar navigation component -->
-            <nav class="navbar navbar-expand-lg navbar-white bg-white">
-                <button type="button" id="sidebarCollapse" class="btn btn-light">
-                    <i class="fas fa-bars"></i><span></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav ms-auto">
-                        <li class="nav-item dropdown">
-                            <div class="nav-dropdown">
-                               
-                                
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <div class="nav-dropdown">
-                                <a href="#" id="nav2" class="nav-item nav-link dropdown-toggle text-secondary" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user"></i> <span>Admin</span> <i style="font-size: .8em;" class="fas fa-caret-down"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end nav-link-menu">
-                                    <ul class="nav-list">
-                                        <li><a href="http://127.0.0.1:5000/admin_login" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <!-- end of navbar navigation -->
-            <div class="content">
-                <div class="container">
-                    <div class="page-title">
-                        <h1>Student Results Based On Group</h1>
-                    </div>
-                        <div class="col-md-12 col-lg-12">
-                            <div class="card">
-                                <div class="card-header">Group Lists</div>
-                                <div class="card-body">
-                                    <p class="card-title"></p>
-                                    {%for result_per_group in all_student_result_by_group%}  
-                                    
-                                    <div id="dataTables-example_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"><div id="dataTables-example_filter" class="dataTables_filter"></div></div></div><div class="row"><div class="col-sm-12"><table class="table table-hover dataTable no-footer dtr-inline collapsed" id="dataTables-example" width="100%" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;"></table>
-                                    <table class="table table-hover" id="dataTables-example" width="100%" >
-                                      <p style="font-size: 40px;">Group {{all_student_result_by_group.index(result_per_group)+1}}  </p>
-                                      <thead>   
-                                          <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Adjectives and adverbs</th>
-                                                <th>Articles a, an, the</th>
-                                                <th>Conditional sentences (if-clauses and main clauses)</th>
-                                                <th>Endings of nouns and verbs</th>
-                                                <th>Plural, 's, one</th>
-                                                <th>Irregular and regular verbs</th>
-                                            
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                           
-                                            
-                                            {%for stu in result_per_group%}  
-                                            <tr> 
-                                            <td>{{stu[0]}} </td>   
-                                            <td>{{stu[1]}} </td>    
-                                            <td>{{stu[2]}} </td>  
-                                            <td>{{stu[3]}} </td>  
-                                            <td>{{stu[4]}} </td>  
-                                            <td>{{stu[5]}} </td>  
-                                            <td>{{stu[6]}} </td> 
-                                            <td>{{stu[7]}} </td> 
-
-                                            </tr>    
-                                            {%endfor%}
-                                            
-
-                                            
-                                        </tbody>
-                                    </table>
-                                    {%endfor%}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    </head>
+    <div class="canvas-wrapper">
+        <canvas class="chart" id="performance"></canvas>
     </div>
     <script src="static/vendor/jquery/jquery.min.js"></script>
     <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="static/vendor/datatables/datatables.min.js"></script>
-    <script src="static/js/initiate-datatables.js"></script>
+    <script src="static/vendor/chartsjs/Chart.min.js"></script>
+    <script src="static/js/dashboard-charts.js"></script>
     <script src="static/js/script.js"></script>
-</body>
-
 </html>

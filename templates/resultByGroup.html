@@ -8,7 +8,7 @@
 <html lang="en">
 
 <head>
-
+    
   <style>
     table {
       font-family: arial, sans-serif;
@@ -33,14 +33,20 @@
     <title>Tables | Bootstrap Simple Admin Template</title>
     
 
+    
     <link href="{{ url_for('static',filename='vendor/fontawesome/css/fontawesome.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='vendor/fontawesome/css/solid.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='vendor/fontawesome/css/brands.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='vendor/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ url_for('static',filename='css/master.css')}}" rel="stylesheet" type="text/css">
-</head>
+    <link href="{{ url_for('static',filename='vendor/flagiconcss/css/flag-icon.min.css') }}" rel="stylesheet" type="text/css">
 
+
+   
+
+</head>
+ 
 <body>
     <div class="wrapper">
         <!-- sidebar navigation component -->
@@ -96,16 +102,39 @@
             <div class="content">
                 <div class="container">
                     <div class="page-title">
-                        <h1>Student Results Based On Group</h1>
+                        <h1>Overall Grouping Analysis</h1>
                     </div>
+                    
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="content">
+                    <div class="head">
+                        <h5 class="mb-0" style="font-size: 50px;">Grouping Performance</h5>
+                        
+                    </div>
+                    <div class="canvas-wrapper" >
+                        
+                        <canvas class="chart" id="performance">
+                           
+                        </canvas>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    
                         <div class="col-md-12 col-lg-12">
                             <div class="card">
+
+                                
+                                
                                 <div class="card-header" style="font-size: 40px;">The difference after using Genetic Algorithm:{{dist}}
                                     <p style="font-size: 30px;">Average Distance: {{overall_dist}}</p>
                                     <p style="font-size: 30px;">Distance if group according to name: {{p_name}}</p>
                                     <p style="font-size: 30px;">Distance if group according to id: {{p_id}}</p>
                                 </div>
-                                
+
+                                <a href="{{url_for('manhattan',dist=dist)}}" class="btn btn-success" style="position:absolute;top: 8px; right:16px; ">Manhattan Analysis</a>
+                         
                                 <div class="card-body">
                                     <p class="card-title"></p>
                                     {%for result_per_group in all_student_result_by_group%}  
@@ -157,11 +186,25 @@
             </div>
         </div>
     </div>
+
+    
     <script src="static/vendor/jquery/jquery.min.js"></script>
     <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="static/vendor/datatables/datatables.min.js"></script>
+    
     <script src="static/js/initiate-datatables.js"></script>
+    <script src="static/vendor/chartsjs/Chart.min.js"></script>
     <script src="static/js/script.js"></script>
+
+    
+    <script>   localStorage.setItem("dist",'{{dist}}');</script>
+    <script>   localStorage.setItem("overall_dist",'{{overall_dist}}');</script>
+    <script>  localStorage.setItem("p_name",'{{p_name}}');</script>
+    <script>   localStorage.setItem("p_id",'{{p_id}}');</script>
+       
+    
+
+    
 </body>
 
 </html>

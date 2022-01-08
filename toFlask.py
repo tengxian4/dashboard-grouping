@@ -22,6 +22,7 @@ TOTAL_TOPIC=[1,2,3,4,5,6]
 
 group_list =[]
 
+student_result_by_group_for_manhattan=0
 
 app =Flask(__name__)
 app.secret_key='123456'
@@ -102,6 +103,8 @@ def resultByGroup():
             resultByGroup.append(result_per_student)
             
         all_student_result_by_group.append(resultByGroup)
+        global student_result_by_group_for_manhattan
+        student_result_by_group_for_manhattan=all_student_result_by_group
     return render_template("resultByGroup.html",all_student_result_by_group=all_student_result_by_group,dist=dist,p_name=p_name,p_id=p_id,overall_dist=overall_dist)
 
 
@@ -456,7 +459,15 @@ def progress():
 def chatbot():
     return render_template('chatbot.html')
 
-         
+@app.route("/manhattan",methods=['GET'])
+def manhattan():
+    dist=request.args.get('dist',False) 
+    return render_template('manhattan.html',all_student_result_by_group=student_result_by_group_for_manhattan,dist=dist)
+
+
+@app.route("/test")  
+def test():
+    return render_template('test.html')  
 
 if __name__=="__main__":
 	app.run(debug=True)
