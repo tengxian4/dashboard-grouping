@@ -1,0 +1,36 @@
+<html>
+<div>
+<p id="control">
+
+
+<div class="pricing-levels-3" id="Group_1">
+    <p><strong>Which level would you like? (Select 3 Levels)</strong></p>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 1<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 2<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 3<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 4<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 5<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 6<br>
+    <input class="single-checkbox" type="checkbox" name="vehicle" value="Bike">Level 7<br>
+
+</div>
+</p>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+
+$('input[type=checkbox]').change(function(e){
+   if ($('input[type=checkbox]:checked').length > 3) {
+        $(this).prop('checked', false)
+        alert("allowed only 3");
+   }
+})
+
+
+  //]]>
+</script>
+<script src="static/vendor/jquery/jquery.min.js"></script>
+</div>
+</html>

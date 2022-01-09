@@ -15,7 +15,7 @@ run
 - python updateDB.py
 
 2. Run
-- python toFlask.py
+- python app.py
 3. Go to this
 http://127.0.0.1:5000/login
 Student ID: 1 until 40

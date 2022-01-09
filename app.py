@@ -1,4 +1,4 @@
-from flask import Flask, redirect,url_for,render_template, request,flash
+from flask import Flask, redirect,url_for,render_template, request,flash,session
 from flask import g
 from flask.helpers import flash
 
@@ -25,7 +25,7 @@ group_list =[]
 student_result_by_group_for_manhattan=0
 
 app =Flask(__name__)
-app.secret_key='123456'
+app.secret_key='abcdef'
 
 
 @app.route("/")
@@ -256,7 +256,7 @@ def quiz():
     print("user name is ")
     print(usr_name)
     if usr_id ==False or usr_name==False:
-        return redirect(url_for("login"))
+        return redirect(url_for('progress',user_id=usr_id,user_name=usr_name))
 
     score =query_db('Select Score1,Score2,Score3,Score4,Score5,Score6 From Progress Where Student_Id='+str(usr_id))
     not_need_do_quiz=False
@@ -378,11 +378,16 @@ def func():
     print(progress_id)
     user_id=dataGet['user_id']
     print(user_id)
+
     insert_db("INSERT INTO Progress (Id, Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(progress_id,score1,score2,score3,score4,score5,score6,user_id))
     
+    user_name=query_db('Select name from student Where id='+str(user_id))
+    user_name=user_name[0][0]
+
     dataReply = {'backend_data':'some_data'}
     time.sleep(2)
-    return "Success"# redirect(url_for('login'))
+    
+    return 
 
 def updateGrade():
     totalStudents=len(query_db('Select * From Student'))
@@ -417,6 +422,7 @@ def login():
 
         #if dont have valid account, pop up error msg
         if user_id!=False:
+            session["user_id"]=id
             return redirect(url_for("progress",user_id=id,user_name=user_name))
         else:
             flash('Looks like you don\'t have an account')
@@ -447,10 +453,18 @@ def admin_login():
 
 @app.route("/progress",methods =['POST','GET'])
 def progress():
+    time.sleep(2)
     checkDB.check()
     usr_id=request.args.get('user_id',False) #it is better to use this then usr_id=request.args['user_id']
     usr_name=request.args.get('user_name',False)
     
+    if "user_id" in session: 
+        usr_id=session["user_id"]
+        print('user id in progess is '+str(usr_id))
+        usr_name=query_db('Select name from student Where id='+str(usr_id))
+        usr_name=usr_name[0][0]     
+    else:
+        redirect(url_for("login"))
     progress,no_question=getProgress.get_progress(usr_id)
     
     return render_template('progress.html',progress=progress,no_question=no_question,zip=zip,usr_id=usr_id,usr_name=usr_name)
@@ -468,6 +482,11 @@ def manhattan():
 @app.route("/test")  
 def test():
     return render_template('test.html')  
+
+@app.route("/logout")
+def logout():
+    session.pop("user_id",None)
+    return redirect(url_for("login"))
 
 if __name__=="__main__":
 	app.run(debug=True)

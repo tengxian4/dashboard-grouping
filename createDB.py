@@ -206,8 +206,11 @@ for i in range(1,41):
         (i,3,3,3,3,3,3))
 
 
-for i in range(1,41):
-    cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(i,random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3), random.randint(0,3),i))
+for i in range(1,21):
+    cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(i,random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1), random.randint(0,1),i))
+
+for i in range(21,41):
+    cur.execute("INSERT INTO Progress (Id,Score1,Score2,Score3,Score4,Score5,Score6,Student_Id) values(?,?,?,?,?,?,?,?)",(i,random.randint(2,3), random.randint(2,3), random.randint(2,3), random.randint(2,3), random.randint(2,3), random.randint(2,3),i))
 
 
 for x in range(2):

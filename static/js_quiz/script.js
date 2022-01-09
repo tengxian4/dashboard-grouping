@@ -164,7 +164,7 @@ function viewResult(){
     
 
     var label = document.createElement("label");    //label
-    label.textContent = "Please click Submit to submit and logout";
+    label.textContent = "Please click Submit:";
     //label.textContent = "Enter Name : ";
 
     /*var text = document.createElement("input");     //textbox for inputting user name

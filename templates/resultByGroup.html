@@ -105,22 +105,7 @@
                         <h1>Overall Grouping Analysis</h1>
                     </div>
                     
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="content">
-                    <div class="head">
-                        <h5 class="mb-0" style="font-size: 50px;">Grouping Performance</h5>
-                        
-                    </div>
-                    <div class="canvas-wrapper" >
-                        
-                        <canvas class="chart" id="performance">
-                           
-                        </canvas>
-                    </div>
-                    </div>
-                    </div>
-                    </div>
+                   
                     
                         <div class="col-md-12 col-lg-12">
                             <div class="card">
@@ -132,7 +117,22 @@
                                     <p style="font-size: 30px;">Distance if group according to name: {{p_name}}</p>
                                     <p style="font-size: 30px;">Distance if group according to id: {{p_id}}</p>
                                 </div>
-
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="content">
+                                <div class="head">
+                                    <h5 class="mb-0" style="font-size: 50px;">Grouping Performance</h5>
+                                    
+                                </div>
+                                <div class="canvas-wrapper" >
+                                    
+                                    <canvas class="chart" id="group_performance">
+                                       
+                                    </canvas>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
                                 <a href="{{url_for('manhattan',dist=dist)}}" class="btn btn-success" style="position:absolute;top: 8px; right:16px; ">Manhattan Analysis</a>
                          
                                 <div class="card-body">
@@ -202,7 +202,51 @@
     <script>  localStorage.setItem("p_name",'{{p_name}}');</script>
     <script>   localStorage.setItem("p_id",'{{p_id}}');</script>
        
+    <script>
+        var performance1 = document.getElementById("group_performance");
+        var myChart4 = new Chart(performance1, {
     
+            type: 'bar',
+            
+            
+            data: {
+                labels: [ 'AI-Grouping','Average','Alphabetical Order','Group According to ID'],
+                
+                datasets: [{
+                        label: 'Score',
+                        data: [localStorage.getItem("dist"), localStorage.getItem("overall_dist"),localStorage.getItem("p_name"), localStorage.getItem("p_id")],
+                        backgroundColor: ["rgba(255,0,0, 0.5)","rgba(76, 175, 80, 0.5)","rgba(76, 175, 80, 0.5)","rgba(76, 175, 80, 0.5)"],
+                        borderColor: "#6da252",
+                        borderWidth: 1,
+                }]
+            }, 
+                       
+                       
+            options: {
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart',
+                },
+                
+                
+                plugins: {
+                  
+                    legend: {
+                        display: false,
+                        position: 'top',
+                        
+                    },
+                    
+                    title: {
+                        display: true,
+                        text: 'Average Score',
+                        position: 'left',
+                    },
+                },
+               
+            }
+            });   
+        </script>
 
     
 </body>
